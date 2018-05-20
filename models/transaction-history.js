@@ -1,7 +1,7 @@
 "use strict";
 
-const Sequelize require('sequelize');
-const Account require('account');
+const Sequelize = require('sequelize');
+const Account   = require('./account');
 
 module.exports = function (sequelize) {
     const TransactionHistory = sequelize.define('transaction_history', {
@@ -15,22 +15,26 @@ module.exports = function (sequelize) {
         fromAccountId: {
             field: 'from_account_id',
             type: Sequelize.INTEGER,
-            references: 'account',
-            referencesKey: 'id'
+            references: {
+                model: 'account',
+                key: 'id'
+            },
         },
 
         toAccountId: {
             field: 'to_account_id',
             type: Sequelize.INTEGER,
-            references: 'account',
-            referencesKey: 'id'
+            references: {
+                model: 'account',
+                key: 'id'
+            },
         },
 
         amount: {
             field: 'amount',
             type: Sequelize.DOUBLE,
             allowNull: false
-        }
+        },
 
         createdAt: {
             field: 'created_at',
@@ -51,8 +55,10 @@ module.exports = function (sequelize) {
         paranoid: true
     });
 
-    TransactionHistory.hasMany(Account, {foreignKey: 'from_account_id'});
-    TransactionHistory.hasMany(Account, {foreignKey: 'to_account_id'});
+    TransactionHistory.associate = (models) => {
+        TransactionHistory.FromAccount = TransactionHistory.belongsTo(models.account);
+        TransactionHistory.ToAccount = TransactionHistory.belongsTo(models.account);
+    }
 
     return TransactionHistory;
 };

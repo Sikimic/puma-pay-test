@@ -9,7 +9,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(boom());
-require('./modules')(router);
+require('./routes')(router);
 app.use(router);
 
 module.exports = app;
