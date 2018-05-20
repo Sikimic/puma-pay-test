@@ -8,17 +8,32 @@ module.exports = {
     up: (queryInterface, Sequelize) => {
 
 
-        // return models.account
-        //     .findAll({
-        //         order: [
-        //             Sequelize.fn( 'RANDOM' )
-        //         ]
-        //     });
+        const transaction = [];
+        const bulkDataLength = 1000;
 
-        // return queryInterface.bulkInsert('transactions_history',);
+        return models.account.findAll()
+            .then(result => {
+                for (let i = 0; i < bulkDataLength; i++) {
+                    transaction.push({
+                        id: uuid(),
+                        from_account_id: result[i].id,
+                        to_account_id: result[i+1].id,
+                        amount: Math.random() * 1000,
+                    });
+                }
+
+                return queryInterface.bulkInsert('transaction_histories', transaction)
+                    .then( result => {
+                        // console.log(result);
+                    })
+                    .catch( error => {
+                        // console.log(error);
+                    });
+            })
+        
     },
 
     down: (queryInterface, Sequelize) => {
-        // return queryInterface.bulkDelete('transactions_history', null);
+        return queryInterface.bulkDelete('transaction_histories', null);
     }
 };
