@@ -78,7 +78,7 @@ module.exports = {
 			return res.boom.badRequest('Provided transaction ID is not valid.');
 
 		models.transaction_history.findById(transactionId, {
-			attributes: ['id', 'amount', 'from_account', 'to_account', 'createdAt', 'updatedAt', 'deletedAt']
+			attributes: ['id', 'amount', 'fromAccountId', 'toAccountId', 'createdAt', 'updatedAt', 'deletedAt']
 		}).then(transaction => {
 			if (_.isEmpty(transaction))
 				return res.boom.badRequest('An transaction with the given ID has not been found.');
