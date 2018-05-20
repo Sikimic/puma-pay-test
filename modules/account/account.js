@@ -1,10 +1,66 @@
 const boom 			= require('express-boom');
 const _ 			= require('underscore');
+const validator 	= require('validator');
 const models 		= require('../../models');
 const constants 	= require('../../utils/constants');
 const scheduler 	= require('./utils/transactions');
 
 module.exports = {
+
+
+	/**
+	* @name <b>getById</b>
+	* @path {GET} /account/:id
+	* @description Retrieves an account when provided an ID.
+	* @header 
+	* @params {int} id - account ID.
+	* @code <b>200</b>: Route handled successfully.
+	* @code <b>400</b>: If a account with the provided ID hasn't been found.
+	* @code <b>401</b>: If the provided token is invalid.
+	* @code <b>500</b>: When the DB didn't parse the input well.
+	* @response account {account} A single account
+	*/
+	getById: (req, res) => {
+		const accountId = req.params.id;
+
+		if (!validator.isUUID(accountId))
+			return res.boom.badRequest('Provided account ID is not valid.');
+
+		models.account.findById(accountId, {
+			attributes: ['id','name','balance', 'createdAt', 'updatedAt', 'deletedAt']
+		}).then(account => {
+			if (_.isEmpty(account))
+				return res.boom.badRequest('An account with the given ID has not been found.');
+
+			res.send(account);
+		}).catch(err => {
+			console.log(err);
+			res.boom.badImplementation('An error occured. Please try again.');
+		});
+  	},
+
+  	/**
+   * @name <b>getAll</b>
+   * @path {GET} /accounts
+   * @description Retrieves all of the accounts.
+   * @header 
+   * @code <b>200</b>: Route handled successfully.
+   * @code <b>500</b>: When the DB didn't parse the input well.
+   * @response accounts {Array.<Account>} Account[]
+   */
+	getAll: (req, res) => {
+
+		models.account.findAll()
+			.then(accounts => {
+			if (_.isEmpty(accounts))
+				return res.boom.badRequest('There are no accounts.');
+
+			res.send(accounts);
+		}).catch(err => {
+			console.log(err);
+			res.boom.badImplementation('An error occured. Please try again.');
+		});
+  	},
 
 	/**
 	* @name <b>startTransfer</b>
