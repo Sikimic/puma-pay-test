@@ -3,7 +3,7 @@
 const Sequelize = require('sequelize');
 
 module.exports = function (sequelize) {
-    const Account = sequelize.define('accounts', {
+    const Account = sequelize.define('account', {
 
         id: {
             type: Sequelize.UUID,

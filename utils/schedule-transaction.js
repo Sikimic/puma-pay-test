@@ -10,7 +10,7 @@ const scheduler = {
 
 			var intervalID = setInterval(() => {
 				return models.sequelize.transaction(t => {
-					return models.accounts
+					return models.account
 					.findAll({
 						where: {
 							name: [srcAccName, dstAccName]

@@ -16,7 +16,7 @@ module.exports = function (sequelize) {
             field: 'from_account_id',
             type: Sequelize.INTEGER,
             references: {
-                model: 'account',
+                model: 'accounts',
                 key: 'id'
             },
         },
@@ -25,7 +25,7 @@ module.exports = function (sequelize) {
             field: 'to_account_id',
             type: Sequelize.INTEGER,
             references: {
-                model: 'account',
+                model: 'accounts',
                 key: 'id'
             },
         },
@@ -56,8 +56,8 @@ module.exports = function (sequelize) {
     });
 
     TransactionHistory.associate = (models) => {
-        TransactionHistory.FromAccount = TransactionHistory.belongsTo(models.accounts);
-        TransactionHistory.ToAccount = TransactionHistory.belongsTo(models.accounts);
+        TransactionHistory.FromAccount = TransactionHistory.belongsTo(models.account);
+        TransactionHistory.ToAccount = TransactionHistory.belongsTo(models.account);
     }
 
     return TransactionHistory;

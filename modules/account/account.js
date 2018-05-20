@@ -45,7 +45,7 @@ module.exports = {
 			if(constants.intervalTypeEnum[req.body['intervalType']] === undefined) 
 				return res.boom.badRequest('Interval type has an invalid value.');
 
-			models.accounts
+			models.account
 				.findAll({
 					where: {
 						name: [req.body['sourceAccountName'], req.body['destinationAccountName']]
