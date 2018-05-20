@@ -2,7 +2,7 @@ const schedule 	= require('node-schedule');
 const boom 		= require('express-boom');
 const _ 		= require('underscore');
 
-const scheduler = {
+const transaction = {
 
 	scheduleTransaction: (srcAccName, dstAccName, amount, startDate, endDate, interval, models, res) => {
 
@@ -23,23 +23,25 @@ const scheduler = {
 							//This should be logged using some logger library
 							console.log('Accounts not found.');
 
-						let accountA = accounts[0].name === srcAccName ? accounts[0] : accounts[1];
-						let accountB = accounts[0].name === dstAccName ? accounts[0] : accounts[1];
+						let srcAccount = accounts[0].name === srcAccName ? accounts[0] : accounts[1];
+						let dstAccount = accounts[0].name === dstAccName ? accounts[0] : accounts[1];
 
-						if (accountA.balance < amount) {
+						if (srcAccount.balance < amount) {
 							clearTimeout(intervalID);
 							//This should be logged using some logger library
 							console.log('Not enough credits on account.');
 							return;
 						}
 
-						accountA.balance -= amount;
-						accountB.balance += amount;
+						srcAccount.balance -= amount;
+						dstAccount.balance += amount;
 
-						return accountA.save({transaction: t})
+						return srcAccount.save({transaction: t})
 							.then(result => {
-								return accountB.save({transaction: t})
-									.catch(error => {
+								return dstAccount.save({transaction: t})
+									.then( result2 => {
+										saveTransaction(srcAccount, dstAccount, amount, models);
+									}).catch(error => {
 										//This should be logged using some logger library
 										console.log('An error occured, please try again.');
 									});
@@ -52,14 +54,26 @@ const scheduler = {
 						//This should be logged using some logger library
 						console.log('Accounts not found.');
 					});
-				})
+				});
 			}, interval);
 		});
 
-		return res.send('Scheduler created with provided params.');
+		return res.send('Schedule created with provided params.');
 	}
 };
 
-module.exports = scheduler;
+function saveTransaction(srcAccount, dstAccount, amount, models) {
+	models.transaction_history.create({
+		amount: amount,
+		from_account: srcAccount.id,
+		to_account: dstAccount.id,
+	}).then(result => {
+		console.log('Transaction saved.');
+	}).catch(err => {
+		console.log(err);
+	});
+}
+
+module.exports = transaction;
 
 	

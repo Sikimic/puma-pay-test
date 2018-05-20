@@ -2,7 +2,7 @@ const boom 			= require('express-boom');
 const _ 			= require('underscore');
 const models 		= require('../../models');
 const constants 	= require('../../utils/constants');
-const scheduler 	= require('../../utils/schedule-transaction');
+const scheduler 	= require('./utils/transactions');
 
 module.exports = {
 

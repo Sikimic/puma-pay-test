@@ -2,7 +2,7 @@
 
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('transactions_history', { 
+        return queryInterface.createTable('transaction_histories', { 
 
             id: {
                 type: Sequelize.UUID,
@@ -35,6 +35,6 @@ module.exports = {
     },
 
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('transactions_history');
+        return queryInterface.dropTable('transaction_histories');
     }
 };
