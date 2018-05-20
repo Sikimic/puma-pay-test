@@ -65,8 +65,8 @@ const transaction = {
 function saveTransaction(srcAccount, dstAccount, amount, models) {
 	models.transaction_history.create({
 		amount: amount,
-		from_account: srcAccount.id,
-		to_account: dstAccount.id,
+		fromAccountId: srcAccount.id,
+		toAccountId: dstAccount.id,
 	}).then(result => {
 		console.log('Transaction saved.');
 	}).catch(err => {

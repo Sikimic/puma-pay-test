@@ -9,7 +9,7 @@ module.exports = {
 
 
 	/**
-	* @name <b>getById</b>
+	* @name <b>getAccountById</b>
 	* @path {GET} /account/:id
 	* @description Retrieves an account when provided an ID.
 	* @header 
@@ -20,7 +20,7 @@ module.exports = {
 	* @code <b>500</b>: When the DB didn't parse the input well.
 	* @response account {account} A single account
 	*/
-	getById: (req, res) => {
+	getAccountById: (req, res) => {
 		const accountId = req.params.id;
 
 		if (!validator.isUUID(accountId))
@@ -40,7 +40,7 @@ module.exports = {
   	},
 
   	/**
-   * @name <b>getAll</b>
+   * @name <b>getAllAccounts</b>
    * @path {GET} /accounts
    * @description Retrieves all of the accounts.
    * @header 
@@ -48,7 +48,7 @@ module.exports = {
    * @code <b>500</b>: When the DB didn't parse the input well.
    * @response accounts {Array.<Account>} Account[]
    */
-	getAll: (req, res) => {
+	getAllAccounts: (req, res) => {
 
 		models.account.findAll()
 			.then(accounts => {
@@ -56,6 +56,60 @@ module.exports = {
 				return res.boom.badRequest('There are no accounts.');
 
 			res.send(accounts);
+		}).catch(err => {
+			console.log(err);
+			res.boom.badImplementation('An error occured. Please try again.');
+		});
+  	},
+
+  	/**
+	* @name <b>getTransactionById</b>
+	* @path {GET} /account/transaction/:id
+	* @description Retrieves an transaction when provided an ID.
+	* @header 
+	* @params {int} id - transaction ID.
+	* @code <b>200</b>: Route handled successfully.
+	* @code <b>400</b>: If a transaction with the provided ID hasn't been found.
+	* @code <b>401</b>: If the provided token is invalid.
+	* @code <b>500</b>: When the DB didn't parse the input well.
+	* @response transaction {transaction} A single transaction
+	*/
+	getTransactionById: (req, res) => {
+		const transactionId = req.params.id;
+
+		if (!validator.isUUID(transactionId))
+			return res.boom.badRequest('Provided transaction ID is not valid.');
+
+		models.transaction_history.findById(transactionId, {
+			attributes: ['id', 'amount', 'from_account', 'to_account', 'createdAt', 'updatedAt', 'deletedAt']
+		}).then(transaction => {
+			if (_.isEmpty(transaction))
+				return res.boom.badRequest('An transaction with the given ID has not been found.');
+
+			res.send(transaction);
+		}).catch(err => {
+			console.log(err);
+			res.boom.badImplementation('An error occured. Please try again.');
+		});
+  	},
+
+  	/**
+   * @name <b>getAllTransactions</b>
+   * @path {GET} /account/transactions/
+   * @description Retrieves all of the transactions.
+   * @header 
+   * @code <b>200</b>: Route handled successfully.
+   * @code <b>500</b>: When the DB didn't parse the input well.
+   * @response transactions {Array.<TransactionHistory>} TransactionHistory[]
+   */
+	getAllTransactions: (req, res) => {
+
+		models.transaction_history.findAll()
+			.then(transactions => {
+			if (_.isEmpty(transactions))
+				return res.boom.badRequest('There are no transactions.');
+
+			res.send(transactions);
 		}).catch(err => {
 			console.log(err);
 			res.boom.badImplementation('An error occured. Please try again.');

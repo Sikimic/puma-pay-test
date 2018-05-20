@@ -12,6 +12,24 @@ module.exports = function (sequelize) {
             defaultValue: Sequelize.UUIDV4(),
         },
 
+        fromAccountId: {
+            field: 'from_account_id',
+            type: Sequelize.UUID,
+            references: {
+                model: 'accounts',
+                key: 'id'
+            }
+        },
+
+        toAccountId: {
+            field: 'to_account_id',
+            type: Sequelize.UUID,
+            references: {
+                model: 'accounts',
+                key: 'id'
+            }
+        },
+
         amount: {
             field: 'amount',
             type: Sequelize.DOUBLE,
@@ -39,12 +57,12 @@ module.exports = function (sequelize) {
 
     TransactionHistory.associate = (models) => {
         TransactionHistory.belongsTo(models.account, {
-            as: 'from_account',
+            as: 'as_from_account',
             foreignKey: 'from_account_id',
             targetKey: 'id'
         });
         TransactionHistory.belongsTo(models.account, {
-            as: 'to_account',
+            as: 'as_to_account',
             foreignKey: 'to_account_id',
             targetKey: 'id'
         });

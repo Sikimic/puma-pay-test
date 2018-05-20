@@ -10,6 +10,16 @@ module.exports = {
                 defaultValue: Sequelize.UUIDV4(),
             },
 
+            fromAccountId: {
+                field: 'from_account_id',
+                type: Sequelize.UUID,
+            },
+
+            toAccountId: {
+                field: 'to_account_id',
+                type: Sequelize.UUID,
+            },
+
             amount: {
                 field: 'amount',
                 type: Sequelize.DOUBLE,
