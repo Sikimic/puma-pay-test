@@ -56,8 +56,8 @@ module.exports = function (sequelize) {
     });
 
     TransactionHistory.associate = (models) => {
-        TransactionHistory.FromAccount = TransactionHistory.belongsTo(models.account);
-        TransactionHistory.ToAccount = TransactionHistory.belongsTo(models.account);
+        TransactionHistory.FromAccount = TransactionHistory.belongsTo(models.accounts);
+        TransactionHistory.ToAccount = TransactionHistory.belongsTo(models.accounts);
     }
 
     return TransactionHistory;
