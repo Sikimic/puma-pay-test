@@ -2,48 +2,39 @@
 
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('accounts', { 
+        return queryInterface.createTable('transactions_history', { 
 
             id: {
                 type: Sequelize.UUID,
                 primaryKey: true,
-                allowNull: false,
                 defaultValue: Sequelize.UUIDV4(),
             },
 
-            name: {
-                field: 'name',
-                type: Sequelize.STRING,
-                unique: true,
-                allowNull: false
-            },
-
-            balance: {
+            amount: {
+                field: 'amount',
                 type: Sequelize.DOUBLE,
-                defaultValue: 0.0,
             },
 
             createdAt: {
-                type: Sequelize.DATE,
                 field: 'created_at',
+                type: Sequelize.DATE,
                 defaultValue: Sequelize.literal('NOW()')
             },
 
             updatedAt: {
-                type: Sequelize.DATE,
                 field: 'updated_at',
+                type: Sequelize.DATE,
                 defaultValue: Sequelize.literal('NOW()')
             },
-              
-            deletedAt: {
-                type: Sequelize.DATE,
-                field: 'deleted_at'
-            }
 
+            deletedAt: {
+                field: 'deleted_at',
+                type: Sequelize.DATE
+            },
         });
     },
 
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('accounts');
-    }  
+        return queryInterface.dropTable('transactions_history');
+    }
 };

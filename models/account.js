@@ -43,5 +43,14 @@ module.exports = function (sequelize) {
         paranoid: true
     });
 
+    Account.associate = (models) => {
+        Account.hasMany(models.transaction_history, {
+          foreignKey: 'from_account_id',
+        });
+        Account.hasMany(models.transaction_history, {
+          foreignKey: 'to_account_id',
+        });
+    }
+
     return Account;
 };
