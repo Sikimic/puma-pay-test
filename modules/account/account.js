@@ -12,7 +12,6 @@ module.exports = {
 	* @name <b>getAccountById</b>
 	* @path {GET} /account/:id
 	* @description Retrieves an account when provided an ID.
-	* @header 
 	* @params {int} id - account ID.
 	* @code <b>200</b>: Route handled successfully.
 	* @code <b>400</b>: If a account with the provided ID hasn't been found.
@@ -43,7 +42,6 @@ module.exports = {
    * @name <b>getAllAccounts</b>
    * @path {GET} /accounts
    * @description Retrieves all of the accounts.
-   * @header 
    * @code <b>200</b>: Route handled successfully.
    * @code <b>500</b>: When the DB didn't parse the input well.
    * @response accounts {Array.<Account>} Account[]
@@ -66,7 +64,6 @@ module.exports = {
 	* @name <b>getTransactionById</b>
 	* @path {GET} /account/transaction/:id
 	* @description Retrieves an transaction when provided an ID.
-	* @header 
 	* @params {int} id - transaction ID.
 	* @code <b>200</b>: Route handled successfully.
 	* @code <b>400</b>: If a transaction with the provided ID hasn't been found.
@@ -97,7 +94,6 @@ module.exports = {
    * @name <b>getAllTransactions</b>
    * @path {GET} /account/transactions/
    * @description Retrieves all of the transactions.
-   * @header 
    * @code <b>200</b>: Route handled successfully.
    * @code <b>500</b>: When the DB didn't parse the input well.
    * @response transactions {Array.<TransactionHistory>} TransactionHistory[]
@@ -120,7 +116,6 @@ module.exports = {
 	* @name <b>startTransfer</b>
 	* @path {POST} /account/start-transfer
 	* @description Creates a scheduler that start the specified transfer with provided parameters
-	* @header
 	* @params {string} sourceAccountName - Source account name.
 	* @params {string} destinationAccountName - Destination account name.
 	* @params {double} amount - Amount to be transfered.
