@@ -33,7 +33,10 @@ module.exports = {
 			if (parseFloat(req.body['amount']) === NaN) 
 				return res.boom.badRequest('Amount must contain a floating value.');
 
-			if(!_.isDate(new Date(req.body['startDateTime'])) || !_.isDate(new Date(req.body['endDateTime']))) 
+			let startDate = new Date(req.body['startDateTime']);
+			let endDate = new Date(req.body['endDateTime']);
+
+			if(!_.isDate(new Date(startDate)) || !_.isDate(endDate) || (endDate.getTime() < startDate.getTime()) || (startDate.getTime() - 15 < new Date().getTime())) 
 				return res.boom.badRequest('Invalid Date format.');
 
 			if((req.body['intervalTime'] < 0) || parseInt(req.body['intervalTime']) === NaN) 
@@ -41,10 +44,6 @@ module.exports = {
 
 			if(constants.intervalTypeEnum[req.body['intervalType']] === undefined) 
 				return res.boom.badRequest('Interval type has an invalid value.');
-
-
-			let startDate = new Date(req.body['startDateTime']);
-			let endDate = new Date(req.body['endDateTime']);
 
 			models.accounts
 				.findAll({
@@ -61,10 +60,10 @@ module.exports = {
 					if (accountA.balance < parseFloat(req.body['amount']))
 						return res.boom.badRequest('Not enough credits on account.');
 
-					scheduler.scheduleTransaction(accountA.name, accountB.name, parseFloat(req.body['amount']), startDate, endDate, constants.intervalTypeEnum[req.body['intervalType']] * parseInt(req.body['intervalTime']), models);
+					return scheduler.scheduleTransaction(accountA.name, accountB.name, parseFloat(req.body['amount']), startDate, endDate, constants.intervalTypeEnum[req.body['intervalType']] * parseInt(req.body['intervalTime']), models, res);
 
 				}).catch( error => {
-
+					return res.boom.badRequest('Accounts not found.');
 				})
 	}
 };
