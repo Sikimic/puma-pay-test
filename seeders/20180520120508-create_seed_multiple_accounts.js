@@ -1,21 +1,23 @@
 'use strict';
 
-const uuid = require('uuid/v4');
+const uuid      = require('uuid/v4');
+const faker     = require('faker');
+
 
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        const accounts = [
-            {
+
+        const accounts = [];
+        const bulkDataLength = 1000;
+
+        for (let i = 0; i < bulkDataLength; i++) {
+            accounts.push({
                 id: uuid(),
-                name: 'A',
-                balance: 100.0,
-            },
-            {
-                id: uuid(),
-                name: 'B',
-                balance: 100.0,
-            }
-        ];
+                name: faker.fake("{{company.companyName}} {{company.companySuffix}}, {{finance.accountName}} from {{address.country}}"),
+                balance: Math.floor(Math.random() * 10000),
+            });
+        }
+
 
         return queryInterface.bulkInsert('accounts', accounts)
             .then( result => {
