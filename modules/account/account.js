@@ -130,7 +130,7 @@ module.exports = {
 	*/
 	startTransfer: (req, res) => {
 		const requiredFields = ['sourceAccountName', 'destinationAccountName', 'amount', 'startDateTime', 'endDateTime', 'intervalTime', 'intervalType'];
-
+		console.log(req.body);
 		for(var item in requiredFields) 
 			if (_.isEmpty(req.body[requiredFields[item]]))
 				return res.boom.badRequest('Please fill in the ' + requiredFields[item] + ' field.');
