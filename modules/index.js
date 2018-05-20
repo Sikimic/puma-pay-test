@@ -5,7 +5,7 @@ var glob = require('glob');
 var env = process.env.NODE_ENV || 'DEBUG';
 
 module.exports = (router) => {
-  glob.sync( './modules/*/index.js' ).forEach( function( file ) {
-    require(path.resolve( file )) (router);
-  });
+	glob.sync( './modules/*/index.js' ).forEach( function( file ) {
+    	require(path.resolve( file )) (router);
+	});
 };
