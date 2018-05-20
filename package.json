@@ -1,0 +1,27 @@
+{
+  "name": "puma-pay-test",
+  "version": "1.0.0",
+  "description": "Nodejs app with a module for scheduled transactions",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sikimic/puma-pay-test.git"
+  },
+  "author": "Sikimic Nebojsa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sikimic/puma-pay-test/issues"
+  },
+  "homepage": "https://github.com/Sikimic/puma-pay-test#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "express-boom": "^2.0.0",
+    "glob": "^7.1.2",
+    "sequelize": "^4.37.8",
+    "underscore": "^1.9.0"
+  }
+}
